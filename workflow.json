@@ -1,0 +1,244 @@
+{
+  "name": "Send CVs to Pending Companies",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "=YOUR_DRIVE_FILE_ID",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "id": "83932db1-3bb4-42be-9dbf-ce4d0a576ee6",
+      "name": "Download CV",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        0
+      ],
+      "executeOnce": false,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lGeiMbhZ28YogR4h",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Read Pending Rows').item.json['Company Email'] }}",
+        "subject": "={{ \"Application for Systems Analyst / Technical Project Specialist - Yousef Al-Anazi - \" + $('Read Pending Rows').item.json.Company }}",
+        "message": "=Dear Hiring Team at {{ $('Read Pending Rows').item.json.Company }},<br><br>\n\nI am writing to express my interest in Systems Analyst and Technical Project Specialist roles within your organization. Holding a degree in Information Systems and certifications from Tuwaiq Academy and Cisco, I specialize in full-stack web development, cloud solution integration, and system analysis.<br><br>\n\nPlease find my CV attached for your review. I would welcome the opportunity to discuss how my technical skills can support your projects.<br><br>\n\nBest regards,<br>\n<b>Yousef Al-Anazi</b><br>\nInformation Systems Specialist<br><br>\n\n<hr><br>\n\nالسلام عليكم ورحمة الله وبركاته،<br><br>\n\nأتقدم لكم برغبتي في الانضمام إلى فريقكم في مجالات تحليل النظم وإدارة المشاريع التقنية. أحمل مؤهلاً في نظم المعلومات مع خبرة في تطوير التطبيقات وتكامل الحلول السحابية، بالإضافة إلى شهادات تخصصية من أكاديمية طويق وسيسكو.<br><br>\n\nمرفق لكم السيرة الذاتية للاطلاع عليها، وأتطلع للتواصل معكم لمناقشة كيف يمكنني المساهمة في تحقيق أهداف فريقكم.<br><br>\n\nشاكر لكم وقتكم واهتمامكم،<br>\n<b>يوسف العنزي</b>",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "id": "2326a4d6-830e-43b3-a9bc-2800e2f96601",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "webhookId": "1b88c440-76c3-4c8c-a6ec-106766bf9d08",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wy1PuGH2aQn1lUE7",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Companies_List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1019673424,
+          "mode": "list",
+          "cachedResultName": "تأكدلي من الايميلات و مافي شي مكرر",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1019673424"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "row_number"
+          ],
+          "value": {
+            "row_number": "={{ $('Read Pending Rows').item.json.row_number }}",
+            "Status": "Sent"
+          },
+          "schema": [
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5f0fc6b0-2d16-4554-b9d2-30e488268200",
+      "name": "Update Status to Sent",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        0
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZtaMjvzWrsC30x2g",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1TJyIXZYkV2smhWy5WHCcEpNKrLeO6OnYUqgvNn_nh6M",
+          "mode": "list",
+          "cachedResultName": "Emalil Company",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TJyIXZYkV2smhWy5WHCcEpNKrLeO6OnYUqgvNn_nh6M/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1247176607,
+          "mode": "list",
+          "cachedResultName": "تأكدلي من الايميلات و مافي شي مكرر",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TJyIXZYkV2smhWy5WHCcEpNKrLeO6OnYUqgvNn_nh6M/edit#gid=1247176607"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Pending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f62cd20d-4549-4a12-aa65-c420e7758a8f",
+      "name": "Read Pending Rows",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZtaMjvzWrsC30x2g",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "936a35bb-5e3b-4df0-a30d-68209583b736",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Download CV": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email": {
+      "main": [
+        [
+          {
+            "node": "Update Status to Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Pending Rows": {
+      "main": [
+        [
+          {
+            "node": "Download CV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Pending Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "00d0be69-f974-4980-a3f9-89ee5630e645",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "250d8f51a3d78915feb044e379ded305758d43a11b817c2a408744c284076887"
+  },
+  "nodeGroups": [],
+  "id": "OuCt6hbtHKQT8uSt",
+  "tags": []
+}
